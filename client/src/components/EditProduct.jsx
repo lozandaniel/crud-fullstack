@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { CloseIcon } from "./Icons"
 
-export function EditProduct({ setEdit, products, product }) {
+export function EditProduct({ setEdit, product }) {
   console.log
 
   const [data, setData] = useState({
@@ -26,7 +26,7 @@ export function EditProduct({ setEdit, products, product }) {
   }
 
   return (
-    <dialog open className='w-full h-96 absolute top-[0] backdrop-blur-xl backdrop-brightness-100 rounded-lg z-10'>
+    <dialog open className='w-full h-screen absolute top-[0] backdrop-opacity-10 rounded-lg z-10'>
       <div className='flex justify-between items-center w-3/5 mx-auto'>
         <h2 className='font-lilita-one text-3xl font-bold py-4' >Editar producto</h2>
         <button onClick={() => setEdit(false)}>

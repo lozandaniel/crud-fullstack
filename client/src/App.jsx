@@ -1,9 +1,11 @@
+import axios from 'axios'
 import { useEffect, useState } from 'react'
 import './App.css'
-import axios from 'axios'
 import { ProductList } from './components/ProductsList'
 import { EditProduct } from './components/EditProduct'
 import { Header } from './components/Header'
+import { URL_API } from './utils/utils'
+import { Footer } from './components/Footer'
 
 function App() {
   const [edit, setEdit] = useState(false)
@@ -17,7 +19,7 @@ function App() {
   });
 
   useEffect(() => {
-    axios.get('http://localhost:4000/api/products')
+    axios.get(URL_API)
       .then(res => {
         setProducts(res.data)
       })
@@ -34,9 +36,12 @@ function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post('http://localhost:4000/api/products', form)
+    const { name, description, price } = form
+    if (name === '' || description === '' || price === '') return;
+
+    axios.post(URL_API, form)
     setProducts(prevState => [...prevState, form])
-  };
+  }
 
   const updateProduct = (prod) => {
     setEdit(true)
@@ -45,19 +50,19 @@ function App() {
   }
 
   const deleteProduct = (id) => {
-    axios.delete('http://localhost:4000/api/products/' + id, form)
+    axios.delete(URL_API + id, form)
     setProducts(prevState => prevState.filter((task) => task.id !== id));
   }
 
-
   return (
-    <>
+    <div className='container px-10'>
       <Header handleChange={handleChange} handleSubmit={handleSubmit} />
       {edit
-        ? <EditProduct form={form} setEdit={setEdit} product={product} products={products} />
+        ? <EditProduct setEdit={setEdit} product={product} products={products} />
         : <ProductList products={products} updateProduct={updateProduct} deleteProduct={deleteProduct} />
       }
-    </>
+      <Footer />
+    </div>
   )
 }
 export default App
